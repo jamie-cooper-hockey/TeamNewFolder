@@ -29,9 +29,10 @@
 		
 			$(function(){
 				console.log('jQuery is working')
-
+				
 				$('#contact').click(function(){
-
+					$('#main_text').empty()
+					
 					let contact_us_html = `<br><p>Thank you for trying to contact Team New Folder bookshop. There are a number of ways that you can get into contact with us:<br>
 						<ul>
 							<li> Contact us by telephone: 12345 678 912</li>
@@ -42,15 +43,27 @@
 							<li> Contact us on Instagram: <a href='https://www.instagram.com/bookshop_org_uk/'> Team New Folder <img src='icons8-instagram-48.png' width='25px' height='25px'></a></li>
 							</ul></p>`
 					$('#main_text').append($(contact_us_html))
+					
 						
 				})
 
 				$('#genre').change(function(){
+					
 					let val = this.value;
 					console.log(`Value is ${val}`)
 					$.get(`localhost:2225/bookshop/genre/${val}`,function(data){
 						console.log(data)
 					})
+				})
+
+				$('#SearchGo').click(function(){
+					console.log('Button clicked')
+					let val = $('#search').val()
+					console.log('Value:',val)
+					$.get(`localhost:2225/bookshop/${val}`,function(data){
+						console.log(data)
+					})
+					
 				})
 			})
 
@@ -98,7 +111,7 @@
 		<div>
 			<p id='main_text'></p>
 		</div>
-		
+	
 		
 		<br><br><br>
 	
