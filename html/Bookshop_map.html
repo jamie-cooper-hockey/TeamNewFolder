@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+		<title>Team New Folder Bookshop</title>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+		<link rel="shortcut icon" type="jpg" href="favicon.png"/>
+		<link rel='stylesheet' href="style.css"/>
+        
+        <!-- Local Files -->
+        <script src = "points.js"></script> 
+		<script src = "uk_regions.js"></script>
+		<style> 
+			body, html{
+				width: auto;
+				height:70%;
+			}
+		</style>
+    </head>
+
+    <body>
+		<div>
+			<h1>Team New Folder Bookshop <img src='favicon.png' height='75px'/> </h1>
+		</div>
+		<div>
+			<nav class = "navbar navbar-expand-sm navbar-dark bg-dark" style="height:15%;">
+				<a href="#" class="navbar-brand">Bookshop Service - there are a few ways to find a book:</a><br>
+			</nav>
+		</div>
+		<div>
+			<nav class = "navbar navbar-expand-sm navbar-dark bg-dark" style="height:0%;">
+			<p href="#" class="navbar-brand" style='font-size: smaller; position: relative;' >Try searching for the book title, choose a genre to explore all related titles or contact us if you have any specific queries</p>
+			</nav>
+		</div>
+		<div>
+			<nav class = "navbar navbar-expand-sm navbar-dark bg-dark" style="height:15%;"></nav>
+			<a href="#" class="navbar-brand">&nbsp;&nbsp;<input id='search' placeholder='Search for a book'/>
+				<!-- |<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button> -->
+				<button id='SearchGo'>Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<select name='Genre' id='genre' style='width:auto; height:37px; background-color: lightgray;'>
+					<option value="" selected disabled>Genre</option>
+					<option value='Drama'>Drama</option>
+					<option value='Food'>Food</option>
+					<option value='Children'>Children</option>
+					<option value='Romance'>Romance</option>
+					<option value='Technical'>Technical</option>
+					<option value='Christmas'>Christmas</option>
+					<option value='Historical'>Historical</option>
+				</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button id='contact'>Contact us</button>
+			</a>
+			</nav>
+		</div>
+		
+		
+		<br><br><br>
+	
+		<!-- Nav Bar HTML -->
+		<nav class = "navbar navbar-expand-sm navbar-dark bg-dark" style="height:15%;">
+			<a href="#" class="navbar-brand">Map</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class= "collapse navbar-collapse" id="navbarNavDropdown">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a href="#" class = "nav-link" onclick="addPointData();" onclick="addPointData2();">Show nearby bookshops</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+      
+		<!-- Section for the Map to Go -->
+		<div id="mapid" style="width:100%; height:90%; z-index:99;"></div> <hr>
+
+		<div>
+			<footer text-align='center'>
+				Copyright &copy; 2021. Check out our social media channels:
+				<a href='https://www.facebook.com/bookshop.org/'> <img src='facebook.png' width='40px' height='40px'></a> |
+				<a href='https://twitter.com/bookshop_org_UK'> <img src='twitter-sign.png' width='45px' height='45px'></a> |       
+				<a href='https://www.instagram.com/bookshop_org_uk/'> <img src='icons8-instagram-48.png' width='50px' height='50px'></a>
+			</footer>
+		</div>
+		
+	<script>
+        // Global variables
+        var mymap = L.map('mapid').setView([51.505, -0.09], 12);
+		var single_point;
+
+		// load the map when the page is opened!
+        document.addEventListener('DOMContentLoaded', function() {
+                // functions that happen on load
+                loadLeafletMap();  
+            }, false);
+        
+		
+		function loadLeafletMap() {
+		
+			// load the map
+			L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+				maxZoom: 18,
+				attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+					'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+				id: 'mapbox/streets-v11',
+				tileSize: 512,
+				zoomOffset: -1
+			}).addTo(mymap);
+
+		}
+		// console.log(point)
+		
+		function addPointData() {
+			// add the example data
+			
+			// firstly, start by setting what you want the marker to be from AwesomeMarkers!
+			
+			
+			// then plot the geoJSON data by targeting the latitude and longitude parameters
+			
+			var single_point = L.geoJSON(point[0]).addTo(mymap);
+			var single_point2 = L.geoJSON(point[1]).addTo(mymap);
+			var single_point3 = L.geoJSON(point[2]).addTo(mymap);
+			var single_point4 = L.geoJSON(point[3]).addTo(mymap);
+			var single_point5 = L.geoJSON(point[4]).addTo(mymap);
+			var single_point6 = L.geoJSON(point[5]).addTo(mymap);
+			var single_point7 = L.geoJSON(point[6]).addTo(mymap);
+						
+			var coord = point[0].features[0].geometry.coordinates;
+			var coord2 = point[1].features[0].geometry.coordinates;
+			var coord3 = point[2].features[0].geometry.coordinates;
+			var coord4 = point[3].features[0].geometry.coordinates;
+			var coord5 = point[4].features[0].geometry.coordinates;
+			var coord6 = point[5].features[0].geometry.coordinates;
+			var coord7 = point[6].features[0].geometry.coordinates;
+			
+			var lalo = L.GeoJSON.coordsToLatLng(coord);
+			var lalo2 = L.GeoJSON.coordsToLatLng(coord2);
+			var lalo3 = L.GeoJSON.coordsToLatLng(coord3);
+			var lalo4 = L.GeoJSON.coordsToLatLng(coord4);
+			var lalo5 = L.GeoJSON.coordsToLatLng(coord5);
+			var lalo6 = L.GeoJSON.coordsToLatLng(coord6);
+			var lalo7 = L.GeoJSON.coordsToLatLng(coord7);
+			
+			// mymap.flyTo(lalo);
+
+			console.log(point);
+			console.log('Point 0: ',point[0])
+			
+			// lets add on popup functionality to the point
+		
+			var popup = point[0].features[0].properties.name;
+			var popup2 = point[1].features[0].properties.name;
+			console.log(popup)
+			console.log(popup2)
+			var popup3 = point[2].features[0].properties.name;
+			var popup4 = point[3].features[0].properties.name;
+			var popup5 = point[4].features[0].properties.name;
+			var popup6 = point[5].features[0].properties.name;
+			var popup7 = point[6].features[0].properties.name;
+						
+			single_point.bindPopup('<p>'+popup+'</p>');
+			single_point2.bindPopup('<p>'+popup2+'</p>');
+			single_point3.bindPopup('<p>'+popup3+'</p>');
+			single_point4.bindPopup('<p>'+popup4+'</p>');
+			single_point5.bindPopup('<p>'+popup5+'</p>');
+			single_point6.bindPopup('<p>'+popup6+'</p>');
+			single_point7.bindPopup('<p>'+popup7+'</p>');
+			
+		
+		}
+
+
+        </script>
+    </body>
+</html>
