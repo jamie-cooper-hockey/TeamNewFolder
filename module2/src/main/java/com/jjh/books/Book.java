@@ -1,65 +1,62 @@
 package com.jjh.books;
 
-public class Book extends Product {
-	
-	// Declare Static variables
-	
-	private static int count;
+public class Book {
 
-	// Declare Instance Variables 
-	
-	private Author author;
-	private Publisher publisher;
+    private int isbn;
+    private String title;
+    private String category;
+    private String author;
 
-	public Book() {}
+    public Book() {}
 
-	public Book(String title, Author author, Publisher publisher, double price) {
-		super(title, price);
-		this.author = author;
-		this.publisher = publisher;
-		incrementBookCount();
-	}
-	
-	// Define static methods
-	
-	private static void incrementBookCount() {
-		count++;
-	}
-	
-	public static int getCount() {
-		return count;
-	}
+    public Book(int isbn, String title, String category, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.category = category;
+        this.author = author;
+    }
 
-	// Define instance methods
-	
-	@Override
-	public void printer() {
-		System.out.println("Book - printer");
-	}
-	
-	// Declare getter and setter methods
-	
-	public Author getAuthor() {
-		return author;
-	}
+    public int getIsbn() {
+        return isbn;
+    }
 
-	public void setAuthor(Author author) {
-		this.author = author;
-	}
+    public void setIsbn(int id) {
+        this.isbn = id;
+    }
 
-	public Publisher getPublisher() {
-		return publisher;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setPublisher(Publisher publisher) {
-		this.publisher = publisher;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	@Override
-	public String toString() {
-		String result = "Book[" + super.toString();
-		result = result + String.format(", author=%s, publisher=%s]", author, publisher);
-		return result;
-	}
+    public String getCategory() {
+        return category;
+    }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "isbn='" + isbn + '\'' +
+                ", title='" + title + '\'' +
+                ", category='" + category + '\'' +
+                ", author='" + author + '\'' +
+                '}';
+    }
 }
+
+
