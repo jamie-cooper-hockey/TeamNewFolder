@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600) // see https://www.baeldung.com/spring-cors
 @RestController
 @RequestMapping("bookshop")
 public class BookshopController {
