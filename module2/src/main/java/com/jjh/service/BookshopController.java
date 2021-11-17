@@ -6,6 +6,7 @@ import com.jjh.books.Bookshop;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -15,36 +16,36 @@ public class BookshopController {
     private Bookshop bookshop = new Bookshop();
 
     @GetMapping("{title}")
-    public Book getBook(@PathVariable String title) {
+    public List<Book>  getBook(@PathVariable String title) throws SQLException {
         System.out.println("BookshopController.getBook(" + title + ")");
         return this.bookshop.getBookByTitle(title);
     }
 
     @GetMapping("list")
-    public List<Book> getAllBooks() {
+    public List<Book> getAllBooks() throws SQLException {
         System.out.println("BookshopController.getAllBooks()");
         return bookshop.getBooks();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void addBook(@RequestBody Book book) {
+    public void addBook(@RequestBody Book book) throws SQLException {
         System.out.println("BookshopController.addBook(" + book + ")");
-        this.bookshop.addBook(book);
+        this.bookshop.saveBook(book);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public void updateBook(@RequestBody Book book) {
         System.out.println("BookshopController.updateBook(" + book + ")");
-        this.bookshop.updateBook(book);
+        //this.bookshop.updateBook(book);
     }
 
     @DeleteMapping("{title}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteBook(@PathVariable String title) {
+    public void deleteBook(@PathVariable String title) throws SQLException {
         System.out.println("BookshopController.deleteBook(" + title + ")");
-        bookshop.deleteBook(title);
+        bookshop.deleteBookByTitle(title);
     }
 
     @ExceptionHandler(BookException.class)

@@ -1,39 +1,32 @@
 package com.jjh.books;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.sql.SQLException;
 
 public class BookshopApp {
+    public static void main(String [] args) throws SQLException {
+        Bookshop bookshop = new Bookshop();
+        System.out.println(("------------------------\n"));
 
-	public static void main(String[] args) {
-		System.out.println("Welcome to the Java Bookshop");
+        System.out.println(bookshop.getBooks());
+        System.out.println(("------------------------\n"));
 
-		Bookshop bookshop = new Bookshop();
+        Book b1 = bookshop.getBookByISBN(2);
+        System.out.println(b1);
+        System.out.println(("------------------------\n"));
 
-		for (Book book : bookshop.getBooks()) {
-			System.out.println("Book: " + book);
-		}
+        Book b2 = new Book(5, "Java For Professionals", "Technical", "John Anders");
+        bookshop.saveBook(b2);
+        System.out.println(("------------------------\n"));
 
-		bookshop.getBooks().stream().forEach(b -> System.out.println(b));
+        System.out.println(bookshop.getBooks());
+        System.out.println(("------------------------\n"));
 
-		if (bookshop.getBooks().size() > 0) {
-			Book book1 = bookshop.getBooks().get(0);
-			book1.setSaleDiscount(10.0);
-			System.out.println("Sale price of book: " + book1.calculateSalePrice());
-			book1.getAuthor().prettyPrint();
-			book1.getPublisher().prettyPrint();
-		}
+        bookshop.deleteBook(b2);
+        System.out.println(("------------------------\n"));
 
-		if (bookshop.getBooks().size() > 1) {
-			Sales salesProduct = bookshop.getBooks().get(1);
-			salesProduct.setSaleDiscount(10.0);
-			System.out.println("Sale price of book: " + salesProduct.calculateSalePrice());
-		}
+        System.out.println(bookshop.getBooks());
 
-		List<Book> expensiveBooks = bookshop.getBooks().stream().filter(b -> b.getPrice() > 13.00).collect(Collectors.toList());
-		System.out.println(expensiveBooks);
+        bookshop.shutdown();
 
-
-	}
-
+    }
 }
