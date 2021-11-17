@@ -16,7 +16,7 @@ public class BookshopController {
     private Bookshop bookshop = new Bookshop();
 
     @GetMapping("{title}")
-    public List<Book>  getBook(@PathVariable String title) throws SQLException {
+    public List<Book> getBook(@PathVariable String title) throws SQLException {
         System.out.println("BookshopController.getBook(" + title + ")");
         return this.bookshop.getBookByTitle(title);
     }
