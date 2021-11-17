@@ -27,6 +27,42 @@ public class BookshopController {
         return bookshop.getBooks();
     }
 
+    @GetMapping("genre/Drama")
+    public List<Book> getAllDramaBooks() throws SQLException {
+        System.out.println("BookshopController.getAllBooks()");
+        return bookshop.getCatagoryBooks("Drama");
+    }
+    @GetMapping("genre/Food")
+    public List<Book> getAllFoodBooks() throws SQLException {
+        System.out.println("BookshopController.getAllBooks()");
+        return bookshop.getCatagoryBooks("Food");
+    }
+    @GetMapping("genre/Children")
+    public List<Book> getAllChildrenBooks() throws SQLException {
+        System.out.println("BookshopController.getAllBooks()");
+        return bookshop.getCatagoryBooks("Children");
+    }
+    @GetMapping("genre/Romance")
+    public List<Book> getAllRomanceBooks() throws SQLException {
+        System.out.println("BookshopController.getAllBooks()");
+        return bookshop.getCatagoryBooks("Romance");
+    }
+    @GetMapping("genre/Technical")
+    public List<Book> getAllTechnicalBooks() throws SQLException {
+        System.out.println("BookshopController.getAllBooks()");
+        return bookshop.getCatagoryBooks("Technical");
+    }
+    @GetMapping("genre/Christmas")
+    public List<Book> getAllChristmasBooks() throws SQLException {
+        System.out.println("BookshopController.getAllBooks()");
+        return bookshop.getCatagoryBooks("Christmas");
+    }
+    @GetMapping("genre/Historical")
+    public List<Book> getAllHistoricalBooks() throws SQLException {
+        System.out.println("BookshopController.getAllBooks()");
+        return bookshop.getCatagoryBooks("Historical");
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public void addBook(@RequestBody Book book) throws SQLException {

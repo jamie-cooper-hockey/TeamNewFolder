@@ -94,7 +94,7 @@ public class BookDAO {
 
     public int deleteBook(Book book) throws SQLException {
         System.out.printf("BookDAO.deleteBook(%s)\n", book);
-        String sql = "DELETE FROM books WHERE isbn = '" + book.getIsbn() + "'";
+        String sql = "DELETE * FROM books WHERE isbn = '" + book.getIsbn() + "'";
         System.out.println(sql);
         Statement st = conn.createStatement();
         int result = st.executeUpdate(sql);
@@ -102,14 +102,9 @@ public class BookDAO {
         return result;
     }
 
-
-    public void addBook(Book book) {
-
-    }
-
     public int deleteBookByTitle(String title) throws SQLException {
         System.out.printf("BookDAO.deleteBookByTitle(%s)\n", title);
-        String sql = "DELETE FROM books WHERE title = '" +title + "'";
+        String sql = "DELETE * FROM books WHERE title = '" +title + "'";
         System.out.println(sql);
         Statement st = conn.createStatement();
         int result = st.executeUpdate(sql);
@@ -119,7 +114,7 @@ public class BookDAO {
 
     public List<Book> getBookByTitle(String title) throws SQLException {
         System.out.printf("BookDAO.deleteBookByTitle(%s)\n", title);
-        String sql = "SELECT FROM books WHERE title = '" +title + "'";
+        String sql = "SELECT * FROM books WHERE title = '" +title + "'";
         System.out.println(sql);
         Statement st = conn.createStatement();
         ResultSet rs = st.executeQuery(sql);
@@ -131,6 +126,27 @@ public class BookDAO {
             String category = rs.getString("category");
             String author = rs.getString("author");
             books.add(new Book(isbn, title2, category, author));
+        }
+
+        return books;
+    }
+
+    public List<Book> getAllCatagoryBooks(String genre) throws SQLException {
+        System.out.println("BookDAO.getAllBooks()");
+        List<Book> books = new ArrayList<>();
+
+        String sql = "SELECT * FROM books WHERE category = '" + genre + "' ";
+        System.out.println(sql);
+
+        Statement st = conn.createStatement();
+        ResultSet rs = st.executeQuery(sql);
+
+        while (rs.next()) {
+            int isbn = rs.getInt("isbn");
+            String title = rs.getString("title");
+            String category = rs.getString("category");
+            String author = rs.getString("author");
+            books.add(new Book(isbn, title, category, author));
         }
 
         return books;

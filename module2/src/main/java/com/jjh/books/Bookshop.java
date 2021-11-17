@@ -44,4 +44,9 @@ public class Bookshop {
         System.out.println("Bookshop.getBookByISBN()");
         return dao.getBookByTitle(title);
     }
+
+    public List<Book> getCatagoryBooks(String genre) throws SQLException {
+        System.out.println("Bookshop.getDramaBooks");
+        return dao.getAllCatagoryBooks(genre);
+    }
 }
