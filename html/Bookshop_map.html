@@ -49,19 +49,23 @@
 
 				$('#genre').change(function(e){
 					e.preventDefault()
+					$('#main_text').empty()
 					let val = this.value;
 					console.log(`Value is ${val}`)
-					$.get(`localhost:2225/bookshop/genre/${val}`,function(data){
+					$.get(`http://localhost:2225/bookshop/genre/${val}`,function(data){
 						console.log(data)
+						let genre_html = `<br><p>Books with the genre ${val}:</p>`
+					$('#main_text').append($(genre_html))
 					})
 				})
 
 				$('#SearchGo').click(function(e){
 					e.preventDefault()
+					$('#main_text').empty()
 					console.log('Button clicked')
 					let val = $('#search').val()
 					console.log('Value:',val)
-					$.get(`localhost:2225/bookshop/${val}`,function(data){
+					$.get(`http://localhost:2225/bookshop/${val}`,function(data){
 						console.log(data)
 					})
 					
@@ -85,12 +89,12 @@
 		</div>
 		<div>
 			<nav class = "navbar navbar-expand-sm navbar-dark bg-dark" style="height:0%;">
-			<p href="#" class="navbar-brand" style='font-size: smaller; position: relative;' >Try searching for the book title, choose a genre to explore all related titles or contact us if you have any specific queries</p>
+			<p href="#" class="navbar-brand" style='font-size: smaller;' >Try searching for the book title, choose a genre to explore all related titles or contact us if you have any specific queries</p>
 			</nav>
 		</div>
 		<div>
 			<nav class = "navbar navbar-expand-sm navbar-dark bg-dark" style="height:15%;"></nav>
-			<a href="#" class="navbar-brand">&nbsp;&nbsp;<input id='search' placeholder='Search for a book'/>
+			<a href="#" class="navbar-brand">&nbsp;&nbsp;<input id='search' style='width:450px' placeholder='Search for a book containing a phrase/word'/>
 				<!-- |<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button> -->
