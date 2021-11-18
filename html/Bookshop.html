@@ -33,7 +33,7 @@
 				$('#contact').click(function(e){
 					$('#main_text').empty()
 					e.preventDefault()
-					let contact_us_html = `<br><p>Thank you for trying to contact Team New Folder bookshop. There are a number of ways that you can get into contact with us:<br>
+					let contact_us_html = `<br><h3>Contact us</h3><hr><p>Thank you for trying to contact Team New Folder bookshop. There are a number of ways that you can get into contact with us:<br>
 						<ul>
 							<li> Contact us by telephone: 12345 678 912</li>
 							<li> Contact us by mobile: 07123 456 789</li>
@@ -54,7 +54,18 @@
 					console.log(`Value is ${val}`)
 					$.get(`http://localhost:2225/bookshop/genre/${val}`,function(data){
 						console.log(data)
-						let genre_html = `<br><p>Books with the genre ${val}:</p>`
+                        let genre_html = `<br><h3>Books with the genre '${val}':</h3>`
+                        $.each(data, function(i,genre){
+                            console.log('Genre info:')
+                            genre_html += `<hr><h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${genre.title}</h4>
+                            <ul>
+                                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;By ${genre.author}</li>                              
+                             
+                            </ul>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='${genre.imageURL}' style='width:250px;height:auto'></p>`
+
+                        })
+						genre_html += `</ul>`
 					$('#main_text').append($(genre_html))
 					})
 				})
@@ -67,9 +78,88 @@
 					console.log('Value:',val)
 					$.get(`http://localhost:2225/bookshop/${val}`,function(data){
 						console.log(data)
+                        let search_html = `<br><h3>Books containing the word/phrase '${val}':</h3>`
+                        $.each(data, function(i,search){
+                            console.log('Genre info:')
+                            search_html += `<hr><h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${search.title}</h4>
+                            <ul>
+                                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Author: ${search.author}</li>                              
+                                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Genre: ${search.category}</li>
+                            </ul>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src='${search.imageURL}' style='width:250px;height:auto'></p>`
+
+                        })
+						// search_html += `</ul>`
+					$('#main_text').append($(search_html))
 					})
 					
 				})
+
+                $('#request').click(function(e){
+                    e.preventDefault()
+                    $('#main_text').empty()
+                    console.log('Request a book clicked')
+                    let request_html = `<br><h3>Request a book</h3><hr><h5>&nbsp;Input all relevant data and click 'Submit'</h5>
+                    <div>
+                        <form>
+                        <label for="title">&nbsp;&nbsp;Book Title:</label><br>&nbsp;&nbsp;
+                        <input type="text" id="title" name="title" required><br><br>
+                        <label for="author">&nbsp;&nbsp;Author name:</label><br>&nbsp;&nbsp;
+                        <input type="text" id="author" name="author" required><br><br>
+                        <label for="isbn">&nbsp;&nbsp;Book ISBN:</label><br>&nbsp;&nbsp;
+                        <input type="number" id="isbn" name="isbn" required><br><br>
+                        <label for="imgURL">&nbsp;&nbsp;Image URL:</label><br>&nbsp;&nbsp;
+                        <input type="text" id="img" name="img"><br><br>
+                        <label for="genre">&nbsp;&nbsp;Genre (choose from dropdown):</label><br>&nbsp;&nbsp;
+                        <select required name='Genre' id='genre1' style='width:auto; height:37px; background-color: rgb(239, 239, 239);border-color: rgb(118, 118, 118);'>
+                            <option value='Drama'>Drama</option>
+                            <option value='Food'>Food</option>
+                            <option value='Children'>Children</option>
+                            <option value='Romance'>Romance</option>
+                            <option value='Technical'>Technical</option>
+                            <option value='Christmas'>Christmas</option>
+                            <option value='Historical'>Historical</option>
+				        </select><br><hr>&nbsp;&nbsp;
+                        <input id='requestSubmit' type="submit" value="Submit">
+                        </form>
+                    </div>`
+                    $('#main_text').append($(request_html))
+
+                    $('#requestSubmit').click(function(e){
+                        e.preventDefault()
+                        console.log('Submit clicked')
+                        let author = $('#author').val()
+                        let title = $('#title').val()
+                        let isbn = $('#isbn').val()
+                        let genre = $('#genre1').val()
+                        let image_url = $('#img').val()
+                        if (image_url.length < 2){
+                            image_url = 'https://www.asme.org/getmedia/c2c8ea5a-b690-4ba7-92bb-34bd1432862b/book_guide_hero_books.png?width=300&height=315&ext=.png'
+                        } else {
+                            image_url = $('#img').val()
+                        }
+                        console.log(image_url.length)
+                        console.log(`Book info: title = ${title}, author = ${author}, isbn = ${isbn}, image URL = ${image_url}, and genre = ${genre}`)
+                        $.post(`http://localhost:2225/bookshop/`,`${isbn},${title},${genre},${author},${image_url}`)
+                        .done(function(data){
+                            let new_request_html = `<br><h3>Request a book</h3><hr><h5>&nbsp;Congratulations! Your request was submitted successfully:</h5>
+                        <ul>
+                            <li>Book title: ${title}</li>
+                            <li>Author: ${author}</li>
+                            <li>ISBN: ${isbn}</li>
+                            <li>Genre: ${genre}</li>
+                            <li>Book cover: <br><img src='${image_url}' style='width:250px;height:auto'/></li>
+                        </ul>`
+                        $('#main_text').empty()
+                        $('#main_text').append($(new_request_html))
+                        })
+                        .fail(function(data){
+                            let new_request_html = `<br><h3>Request a book</h3><hr><h5>&nbsp;Error! Your request was denied. Please check your input and submit again.</h5>`
+                            $('#main_text').empty()
+                            $('#main_text').append($(new_request_html))
+                        })
+                    })
+                })
 			})
 
 
@@ -78,18 +168,18 @@
 
     </head>
 
-    <body>
+    <body style='margin-left: 35px; margin-right: 35px;'>
 		<div>
 			<h1>Team New Folder Bookshop <img src='favicon.png' height='75px'/> </h1>
 		</div>
 		<div>
 			<nav class = "navbar navbar-expand-sm navbar-dark bg-dark" style="height:15%;">
-				<a href="#" class="navbar-brand">Bookshop Service - there are a few ways to find a book:</a><br>
+				<h2 href="#" class="navbar-brand">Bookshop Service - there are a few ways to find a book:</h2><br>
 			</nav>
 		</div>
 		<div>
 			<nav class = "navbar navbar-expand-sm navbar-dark bg-dark" style="height:0%;">
-			<p href="#" class="navbar-brand" style='font-size: smaller;' >Try searching for the book title, choose a genre to explore all related titles or contact us if you have any specific queries</p>
+			<h3 href="#" class="navbar-brand" style='font-size: smaller;' >Try searching for the book title, or choose a genre to explore all related titles.<br>Alternatively, choose 'Contact Us' to speak to us directly, or choose 'Request a Book' to fill out a request form.</h3>
 			</nav>
 		</div>
 		<div>
@@ -99,7 +189,7 @@
 					<span class="navbar-toggler-icon"></span>
 				</button> -->
 				<button id='SearchGo'>Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<select name='Genre' id='genre' style='width:auto; height:37px; background-color: lightgray;'>
+				<select name='Genre' id='genre' style='width:auto; height:37px; background-color: rgb(239, 239, 239);border-color: rgb(118, 118, 118);'>
 					<option value="" selected disabled>Genre</option>
 					<option value='Drama'>Drama</option>
 					<option value='Food'>Food</option>
@@ -109,7 +199,8 @@
 					<option value='Christmas'>Christmas</option>
 					<option value='Historical'>Historical</option>
 				</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<button id='contact'>Contact us</button>
+				<button id='contact'>Contact us</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button id='request'>Request a book</button>
 			</a>
 			</nav>
 		</div>
