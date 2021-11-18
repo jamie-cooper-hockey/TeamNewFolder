@@ -30,9 +30,9 @@
 			$(function(){
 				console.log('jQuery is working')
 				
-				$('#contact').click(function(){
+				$('#contact').click(function(e){
 					$('#main_text').empty()
-					
+					e.preventDefault()
 					let contact_us_html = `<br><p>Thank you for trying to contact Team New Folder bookshop. There are a number of ways that you can get into contact with us:<br>
 						<ul>
 							<li> Contact us by telephone: 12345 678 912</li>
@@ -47,8 +47,8 @@
 						
 				})
 
-				$('#genre').change(function(){
-					
+				$('#genre').change(function(e){
+					e.preventDefault()
 					let val = this.value;
 					console.log(`Value is ${val}`)
 					$.get(`localhost:2225/bookshop/genre/${val}`,function(data){
@@ -56,7 +56,8 @@
 					})
 				})
 
-				$('#SearchGo').click(function(){
+				$('#SearchGo').click(function(e){
+					e.preventDefault()
 					console.log('Button clicked')
 					let val = $('#search').val()
 					console.log('Value:',val)
@@ -124,7 +125,7 @@
 			<div class= "collapse navbar-collapse" id="navbarNavDropdown">
 				<ul class="navbar-nav">
 					<li class="nav-item">
-						<a href="#" class = "nav-link" onclick="addPointData();">Show nearby bookshops</a>
+						<a href="#/" class = "nav-link" onclick="addPointData();">Show nearby bookshops</a>
 					</li>
 				</ul>
 			</div>
